@@ -1,5 +1,4 @@
 import sys
-import psycopg2
 import pandas as pd
 from sqlalchemy import create_engine
 
@@ -8,8 +7,7 @@ def read_file(path, columns_sort):
     try: 
         return pd.read_csv(path).sort_values(columns_sort)        
     except IOError as e:
-        print(f'Failed to read the file {path}.')
-        print(e)
+        print(f'Failed to read the file {path}.\n{str(e)}')
 
 
 

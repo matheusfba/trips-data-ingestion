@@ -1,0 +1,32 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  redis-server:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379      
+    networks:
+      - app-tier
+  myapp:
+    build: # "context" and "dockerfile" fields have to be under "build"
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - REDIS_URL=redis://redis-server:6379
+    volumes:
+    - ./src:/app/src
+    depends_on:
+      - redis-server
+    command:
+      tail -f /dev/null
+    networks:
+      - app-tier
+  rq-worker:
+    image: jaredv/rq-docker:0.0.2
+    command: rq worker -u redis://redis-server:6379 high normal low default
