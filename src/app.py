@@ -21,7 +21,7 @@ def main(args):
     logging.info(f'Files to ingest: {files}')
 
     logging.info('Creating RQ queue')
-    queue = Queue(connection=Redis('172.31.0.2', 6379))
+    queue = Queue(connection=Redis('192.168.16.2', 6379))
 
     for file_name in files:
         logging.info(f'Putting {file_name} into queue to ingestion')
