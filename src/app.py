@@ -18,25 +18,23 @@ def start_rq_server(max_files_to_process):
 
 
 def main(args):   
-    files = sys.argv[1].split(",")
+    files = args[1].split(",")
+    time.sleep(1)
     logging.info(f'Files to ingest: {files}')
+    time.sleep(1)
     logging.info('Creating RQ queue') 
+    time.sleep(1)
     logging.info('==========================================================')
     queue = Queue(connection=Redis(os.environ['REDIS_HOST'], 6379),is_async=False)
 
     for file_name in files:
+        time.sleep(1)
         logging.info(f'Putting {file_name} into queue to ingestion.')
         queue.enqueue(ingest_file, file_name, retry=Retry(max=3))
-        #time.sleep(2)
-    #print(f'\n')    
-    logging.info('ALL FINISHED!')
 
-if __name__ == "__main__":
-    
-    #p1 = Process(target=start_rq_server, args=str(len(files)))
-    #p1.start()        
-    time.sleep(2)
-    p2 = Process(target=main(files))
-    p2.start()    
-    #p1.join()
-    p2.join()
+    time.sleep(1)
+    logging.info('FINISHED!')
+
+
+if __name__ == "__main__":    
+    main(sys.argv)    
