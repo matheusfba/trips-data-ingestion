@@ -33,7 +33,7 @@ services:
       - REDIS_URL=redis://redis-server:6379
       - REDIS_HOST=redis-server
     volumes:
-    - ./src:/app/src
+    - ./:/app
     depends_on:
       - redis-server
       - db

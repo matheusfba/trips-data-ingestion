@@ -20,6 +20,10 @@ def start_rq_server(max_files_to_process):
 
 
 def main(args):   
+    if len(args) == 1:
+        logging.error('No files informed to be processed!')
+        sys.exit('FINISHED!')
+        
     files = args[1].split(",")
     time.sleep(1)
     logging.info(f'Files to ingest: {files}')
