@@ -39,13 +39,21 @@ It’s not necessary to host this application anywhere (although you can if you 
 of platform expertise.
 ● We recommend recording a video explaining how it works and steps of execution.
 
-## 💻 Architecture
+## 💻 Requirements
+
+To execute this process, you need to have installed the software below:
+
+1. Git
+2. Docker
+3. Docker Compose
+
+## :pencil: Architecture
 
 IMAGE PENDING
 
 For this challenge, I've builded a architecture that uses a docker-compose to create a container with python scripts that attend the challenge requirements, a Redis server to enqueue jobs and a PostgreSQL database to store data. 
 
-### Running the ingestion process
+### 🚀 Running the ingestion process
 
 To run the files ingestion, the user must put files in 'files_to_ingest' directory. After this, run the below commands in root directory:
 
@@ -54,7 +62,9 @@ docker-compose up -d
 docker-compose exec ingest_app python app.py trips.csv
 ```
 
-If you wish to ingest more than one file, just add it after the script path. The files must be separated by comma.
+The app build will create a volume mapped between the host and the container. So, to add more files to ingestion process, just put it in the files_to_ingest directory in root.
+
+If you wish to ingest more than one file, just add it after the script path. The files must be separated by comma and it must be just the file name, without the full path.
 
 When you run the exec command, the script will execute the follow steps:
 
@@ -69,23 +79,12 @@ The ingestion job will execute the follow steps:
 I decided to use Redis with the RQ library because it gave me the possibility to enqueue jobs to be processed in the background with workers.
 In order to simplify the running of this challenge, I've set to jobs run synchronously. But asynchronously it can be set just changing one parameter to True.
 
-### Showing reports results
+### 🚀 Showing reports results
 
 To show the queries results, just run the below command after did the ingestion process.
 ```
 docker-compose exec myapp ingest_app metrics.py
 ```
-
-
-
-
-Antes de começar, verifique se você atendeu aos seguintes requisitos:
-<!---Estes são apenas requisitos de exemplo. Adicionar, duplicar ou remover conforme necessário--->
-* Você instalou a versão mais recente de `<linguagem / dependência / requeridos>`
-* Você tem uma máquina `<Windows / Linux / Mac>`. Indique qual sistema operacional é compatível / não compatível.
-* Você leu `<guia / link / documentação_relacionada_ao_projeto>`.
-
-## 🚀 Instalando <nome_do_projeto>
 
 Para instalar o <nome_do_projeto>, siga estas etapas:
 
