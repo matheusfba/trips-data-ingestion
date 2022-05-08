@@ -47,11 +47,11 @@ To execute this process, you need to have installed the software below:
 2. Docker
 3. Docker Compose
 
-## :pencil: Architecture
+## :pencil: Local Architecture
 
 ![Blank Diagram (1)](https://user-images.githubusercontent.com/3865974/167312549-7a5e740b-e078-4385-b03f-333644216c91.jpeg)
 
-For this challenge, I've builded a architecture that uses a docker-compose to create a container with python scripts that attend the challenge requirements, a Redis server to enqueue jobs and a PostgreSQL database to store data. 
+For this challenge, I've builded a architecture that uses a docker-compose to create a container with python scripts that attend the challenge requirements, a Redis server to enqueue jobs, and a PostgreSQL database to store data. 
 
 ### 🚀 Running the ingestion process
 
@@ -75,6 +75,7 @@ The ingestion job will execute the follow steps:
 
 1. Read the CSV file passed as argument and create a pandas dataframe with the file data
 2. Save this panda dataframe to 'trips' table in PostgreSQL. I decided to use the [to_sql](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html) pandas function, because it will create the table if does not exist.
+>All steps executed log messages to show the user what's going on background.
 
 I decided to use Redis with the RQ library because it gave me the possibility to enqueue jobs to be processed in the background with workers.
 In order to simplify the running of this challenge, I've set to jobs run synchronously. But asynchronously it can be set just changing one parameter to True.
