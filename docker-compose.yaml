@@ -5,6 +5,17 @@ networks:
     driver: bridge
 
 services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    networks:
+      - app-tier      
   redis-server:
     image: 'bitnami/redis:latest'
     environment:
@@ -17,16 +28,21 @@ services:
     build: # "context" and "dockerfile" fields have to be under "build"
       context: .
       dockerfile: Dockerfile
+    container_name: myapp
     environment:
       - REDIS_URL=redis://redis-server:6379
+      - REDIS_HOST=redis-server
     volumes:
     - ./src:/app/src
     depends_on:
       - redis-server
+      - db
     command:
       tail -f /dev/null
     networks:
       - app-tier
+    links:
+      - db      
   rq-worker:
     image: jaredv/rq-docker:0.0.2
     command: rq worker -u redis://redis-server:6379 high normal low default

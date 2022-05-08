@@ -1,6 +1,8 @@
 FROM python:3.10-slim-bullseye
 
-WORKDIR /app
+COPY . /app
+
+WORKDIR /app/src
 
 COPY requirements.txt requirements.txt
 
@@ -11,6 +13,6 @@ RUN apt-get update -y && \
 
 RUN pip install -r requirements.txt 
 
-COPY . /app
+ENV PYTHONPATH=/app/src
 
 CMD ["python", "/app/src/app.py", "viagens.csv"]
