@@ -85,11 +85,14 @@ In order to simplify the running of this challenge, I've set to jobs run synchro
 ### 🚀 Showing reports results
 
 To show the queries results, just run the below command after did the ingestion process.
+
 ```
 docker-compose exec myapp ingest_app metrics.py
 ```
 
 ## :cloud: Cloud Architecture
+
+![aws-architecture](https://user-images.githubusercontent.com/3865974/167316405-1ea0104b-49a3-450d-bde1-bbc10498a368.png)
 
 For the cloud architecture, I decided to use AWS because I am more familiar with this provider.
 

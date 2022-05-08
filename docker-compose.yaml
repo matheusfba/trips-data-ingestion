@@ -24,11 +24,11 @@ services:
       - 6379:6379      
     networks:
       - app-tier
-  myapp:
+  ingest_app:
     build: # "context" and "dockerfile" fields have to be under "build"
       context: .
       dockerfile: Dockerfile
-    container_name: myapp
+    container_name: ingest_app
     environment:
       - REDIS_URL=redis://redis-server:6379
       - REDIS_HOST=redis-server
