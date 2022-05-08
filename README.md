@@ -87,7 +87,7 @@ In order to simplify the running of this challenge, I've set to jobs run synchro
 To show the queries results, just run the below command after did the ingestion process.
 
 ```
-docker-compose exec myapp ingest_app metrics.py
+docker-compose exec ingest_app python metrics.py
 ```
 
 ## :cloud: Cloud Architecture
