@@ -32,7 +32,7 @@ def ingest_file(file_name):
     time.sleep(1)
 
     logging.info('Saving dataframe to trips table in PostreSQL')
-    save_dataframe(df, 'trips', 'replace')    
+    save_dataframe(df, 'trips', 'append')    
     time.sleep(1)
     logging.info(f'Data from file {file_name} saved in trips table with success!')
     logging.info('==========================================================')

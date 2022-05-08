@@ -1,5 +1,6 @@
 rq
 redis
 pandas
-SQLAlchemy
+tabulate
 psycopg2
+SQLAlchemy
