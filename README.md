@@ -44,6 +44,13 @@ Your project should be stored in a public GitHub repository. When you are done, 
 It’s not necessary to host this application anywhere (although you can if you like). Just make sure your repo has a README.md which contains any instructions we might need for running your project. 
 
 
+### Observations/Recommendation
+● If you will integrate your solution with any cloud platform, you must provide an account
+(user/password) to us to test it.
+● Please detail your code so that we can understand your reasoning and its use regardless
+of platform expertise.
+● We recommend recording a video explaining how it works and steps of execution.
+
 ## 💻 Pré-requisitos
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
