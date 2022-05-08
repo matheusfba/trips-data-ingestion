@@ -41,7 +41,7 @@ of platform expertise.
 
 ## 💻 Architecture
 
-IMAGE PENDING
+![Blank Diagram (1)](https://user-images.githubusercontent.com/3865974/167312549-7a5e740b-e078-4385-b03f-333644216c91.jpeg)
 
 For this challenge, I've builded a architecture that uses a docker-compose to create a container with python scripts that attend the challenge requirements, a Redis server to enqueue jobs and a PostgreSQL database to store data. 
 
