@@ -51,7 +51,7 @@ To execute this process, you need to have installed the software below:
 
 ## :pencil: Local Architecture
 
-![Blank Diagram (1)](https://user-images.githubusercontent.com/3865974/167312549-7a5e740b-e078-4385-b03f-333644216c91.jpeg)
+![local-architecture](https://user-images.githubusercontent.com/3865974/167314127-d86f91e5-a104-4e97-88ec-009babe66a30.png)
 
 For this challenge, I've builded a architecture that uses a docker-compose to create a container with python scripts that attend the challenge requirements, a Redis server to enqueue jobs, and a PostgreSQL database to store data. 
 
