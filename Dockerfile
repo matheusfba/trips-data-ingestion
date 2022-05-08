@@ -14,5 +14,3 @@ RUN apt-get update -y && \
 RUN pip install -r requirements.txt 
 
 ENV PYTHONPATH=/app/src
-
-CMD ["python", "/app/src/app.py", "viagens.csv"]

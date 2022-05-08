@@ -9,12 +9,14 @@ from rq.job import Job
 from ingest import ingest_file
 from multiprocessing import Process
 
-
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 
-def start_rq_server(max_files_to_process):    
-    subprocess.run(["rq", "worker", "--max-jobs", "1", "-q"])
+def start_rq_server(max_files_to_process):
+    """
+        Start the rq worker. Not used in this PoC because I choose to use synchronized process of ingestion
+    """
+    subprocess.run(["rq", "worker", "--max-jobs", max_files_to_process, "-q"])
 
 
 def main(args):   

@@ -1,16 +1,4 @@
-# trips-data-ingestion
-
-<!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos. Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
-
-![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/iuricode/README-template?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/iuricode/README-template?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/iuricode/README-template?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/iuricode/README-template?style=for-the-badge)
-
-<img src="exemplo-image.png" alt="exemplo imagem">
-
-> Linha adicional de texto informativo sobre o que o projeto faz. Sua introdução deve ter cerca de 2 ou 3 linhas. Não exagere, as pessoas não vão ler.
+# Trips Data Ingestion Challenge
 
 ### Description 
 
@@ -51,7 +39,45 @@ It’s not necessary to host this application anywhere (although you can if you 
 of platform expertise.
 ● We recommend recording a video explaining how it works and steps of execution.
 
-## 💻 Pré-requisitos
+## 💻 Architecture
+
+IMAGE PENDING
+
+For this challenge, I've builded a architecture that uses a docker-compose to create a container with python scripts that attend the challenge requirements, a Redis server to enqueue jobs and a PostgreSQL database to store data. 
+
+### Running the ingestion process
+
+To run the files ingestion, the user must put files in 'files_to_ingest' directory. After this, run the below commands in root directory:
+
+```
+docker-compose up -d
+docker-compose exec ingest_app python app.py trips.csv
+```
+
+If you wish to ingest more than one file, just add it after the script path. The files must be separated by comma.
+
+When you run the exec command, the script will execute the follow steps:
+
+1. Get the files list to ingest
+2. For each file, will add the ingestion job to Redis queue using the [RQ library](https://python-rq.org/).
+
+The ingestion job will execute the follow steps:
+
+1. Read the CSV file passed as argument and create a pandas dataframe with the file data
+2. Save this panda dataframe to 'trips' table in PostgreSQL. I decided to use the [to_sql](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html) pandas function, because it will create the table if does not exist.
+
+I decided to use Redis with the RQ library because it gave me the possibility to enqueue jobs to be processed in the background with workers.
+In order to simplify the running of this challenge, I've set to jobs run synchronously. But asynchronously it can be set just changing one parameter to True.
+
+### Showing reports results
+
+To show the queries results, just run the below command after did the ingestion process.
+```
+docker-compose exec myapp ingest_app metrics.py
+```
+
+
+
 
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 <!---Estes são apenas requisitos de exemplo. Adicionar, duplicar ou remover conforme necessário--->

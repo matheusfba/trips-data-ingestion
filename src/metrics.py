@@ -7,6 +7,9 @@ engine = create_engine('postgresql://postgres:postgres@db:5432/postgres')
 
 
 def show_report(file):
+    """
+        Show results of a report sql file
+    """
     sql_file = open(f'/app/sql/{file}','r')
     df = pd.read_sql(sql_file.read(), engine)    
     print(tabulate(df, headers='keys', tablefmt='psql'))
@@ -24,6 +27,7 @@ def main(args):
     show_report('cheap_mobile_appearance.sql')
     print('======================================================================================')
     print('END')
+    
 
 if __name__ == "__main__":    
     main(sys.argv)

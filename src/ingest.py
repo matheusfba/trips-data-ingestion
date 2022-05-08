@@ -6,16 +6,25 @@ from sqlalchemy import create_engine
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)    
 
 
-def read_file(file_name):    
+def read_file(file_name):
+    """
+        Read a CSV file and return a pandas dataframe
+    """
     return pd.read_csv(f'/app/files_to_ingest/{file_name}', parse_dates=['datetime']).sort_values(['origin_coord', 'destination_coord', 'datetime'])            
 
 
 def save_dataframe(df, table, mode):
+    """
+        Save a pandas dataframe in postgresql 'trips' table. If table does not exist, create
+    """
     engine = create_engine('postgresql://postgres:postgres@db:5432/postgres')
     df.to_sql(table, engine, if_exists=mode)
 
 
-def ingest_file(file_name):    
+def ingest_file(file_name):  
+    """
+        Ingest a CSV file to Postgresql
+    """  
     time.sleep(1)
     logging.info(f'Reading file {file_name}')
     try:
