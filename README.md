@@ -104,4 +104,6 @@ According to [AWS documentation](https://www.amazonaws.cn/en/kinesis/data-fireho
 
 It's possible to Firehose send the data directly to Redshift. But I decided to send to S3 because this make possible for the user to query this data also using AWS Athena.
 
+To create the whole infrastructure, I would use Terraform, an infrastrucure as code (IaC) tool that facilitates provisioning and managing infrastructure on-prem and in the cloud.
+
 [⬆ Back to top](#trips-data-ingestion-challenge)<br>
