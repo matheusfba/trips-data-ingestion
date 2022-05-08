@@ -13,13 +13,16 @@ This CSV file gives you a small sample of the data your solution will have to ha
 We do not need a graphical interface. Your application should preferably be a REST API, or a console application. 
 
 ### Mandatory Features
+
 - [x] There must be an automated process to ingest and store the data. 
-- [x] Trips with similar origin, destination, and time of day should be grouped together. ● Develop a way to obtain the weekly average number of trips for an area, defined by a bounding box (given by coordinates) or by a region. 
+- [x] Trips with similar origin, destination, and time of day should be grouped together. 
+- [x] Develop a way to obtain the weekly average number of trips for an area, defined by a bounding box (given by coordinates) or by a region. 
 - [x] Develop a way to inform the user about the status of the data ingestion without using a polling solution. 
 - [x] The solution should be scalable to 100 million entries. It is encouraged to simplify the data by a data model. Please add proof that the solution is scalable. 
 - [x] Use a SQL database.
 
 ### Bonus features 
+
 - [x] Containerize your solution. 
 - [x] Sketch up how you would set up the application using any cloud provider (AWS, Google Cloud, etc). 
 - [x] Include a .sql file with queries to answer these questions: 
@@ -29,8 +32,7 @@ We do not need a graphical interface. Your application should preferably be a RE
 
 Your project should be stored in a public GitHub repository. When you are done, send us the link to your repo. 
 
-It’s not necessary to host this application anywhere (although you can if you like). Just make sure your repo has a README.md which contains any instructions we might need for running your project. 
-
+It’s not necessary to host this application anywhere (although you can if you like). Just make sure your repo has a README.md which contains any instructions we might need for running your project.
 
 ### Observations/Recommendation
 ● If you will integrate your solution with any cloud platform, you must provide an account
@@ -87,80 +89,19 @@ To show the queries results, just run the below command after did the ingestion 
 docker-compose exec myapp ingest_app metrics.py
 ```
 
-Para instalar o <nome_do_projeto>, siga estas etapas:
+## :cloud: Cloud Architecture
 
-Linux e macOS:
-```
-<comando_de_instalação>
-```
+For the cloud architecture, I decided to use AWS because I am more familiar with this provider.
 
-Windows:
-```
-<comando_de_instalação>
-```
+In order to achieve scalability and attend the requirement of use a REST API, this solution starts with the user making a POST to the API Gateway sending the CSV file to be processed. This API will call a AWS Lambda Function which will convert this CSV file to a JSON format and send to a Kinesis Data Firehose, that will deliver this data in an S3 bucket with parquet format. To query this data with a relational database, a Amazon Redshift will be created with an EXTERNAL TABLE, mapping to the S3 path with the parquet files. With the feature 'Redshift Spectrum', users can perform SQL queries on data stored S3 buckets.
 
-## ☕ Usando <nome_do_projeto>
+The tool that made the scalability possible is the Kinesis Firehose, which is a serverless tool and can scale up easily.
+According to [AWS documentation](https://www.amazonaws.cn/en/kinesis/data-firehose/features/):
+>Amazon Kinesis Data Firehose is the easiest way capture, transform, and load streaming data into data stores and analytics tools. Kinesis Data Firehose is a fully managed service that makes it easy to capture, transform, and load massive volumes of streaming data from hundreds of thousands of sources into Amazon S3, Amazon Redshift...
 
-Para usar <nome_do_projeto>, siga estas etapas:
+>Scales elastically
+>Based on your ingestion pattern, Kinesis Data Firehose service might proactively increase the limits when excessive throttling is observed on your delivery stream.
 
-```
-<exemplo_de_uso>
-```
+It's possible to Firehose send the data directly to Redshift. But I decided to send to S3 because this make possible for the user to query this data also using AWS Athena.
 
-Adicione comandos de execução e exemplos que você acha que os usuários acharão úteis. Fornece uma referência de opções para pontos de bônus!
-
-## 📫 Contribuindo para <nome_do_projeto>
-<!---Se o seu README for longo ou se você tiver algum processo ou etapas específicas que deseja que os contribuidores sigam, considere a criação de um arquivo CONTRIBUTING.md separado--->
-Para contribuir com <nome_do_projeto>, siga estas etapas:
-
-1. Bifurque este repositório.
-2. Crie um branch: `git checkout -b <nome_branch>`.
-3. Faça suas alterações e confirme-as: `git commit -m '<mensagem_commit>'`
-4. Envie para o branch original: `git push origin <nome_do_projeto> / <local>`
-5. Crie a solicitação de pull.
-
-Como alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
-
-## 🤝 Colaboradores
-
-Agradecemos às seguintes pessoas que contribuíram para este projeto:
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="#">
-        <img src="https://avatars3.githubusercontent.com/u/31936044" width="100px;" alt="Foto do Iuri Silva no GitHub"/><br>
-        <sub>
-          <b>Iuri Silva</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="#">
-        <img src="https://s2.glbimg.com/FUcw2usZfSTL6yCCGj3L3v3SpJ8=/smart/e.glbimg.com/og/ed/f/original/2019/04/25/zuckerberg_podcast.jpg" width="100px;" alt="Foto do Mark Zuckerberg"/><br>
-        <sub>
-          <b>Mark Zuckerberg</b>
-        </sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="#">
-        <img src="https://miro.medium.com/max/360/0*1SkS3mSorArvY9kS.jpg" width="100px;" alt="Foto do Steve Jobs"/><br>
-        <sub>
-          <b>Steve Jobs</b>
-        </sub>
-      </a>
-    </td>
-  </tr>
-</table>
-
-
-## 😄 Seja um dos contribuidores<br>
-
-Quer fazer parte desse projeto? Clique [AQUI](CONTRIBUTING.md) e leia como contribuir.
-
-## 📝 Licença
-
-Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE.md) para mais detalhes.
-
-[⬆ Voltar ao topo](#nome-do-projeto)<br>
+[⬆ Back to top](#trips-data-ingestion-challenge)<br>
