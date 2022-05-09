@@ -43,7 +43,7 @@ of platform expertise.
 
 ## 💻 Requirements
 
-To execute this process, you need to have installed the software below:
+To execute this process, you need to have installed the softwares below:
 
 1. Git
 2. Docker
@@ -53,7 +53,7 @@ To execute this process, you need to have installed the software below:
 
 ![local-architecture](https://user-images.githubusercontent.com/3865974/167314127-d86f91e5-a104-4e97-88ec-009babe66a30.png)
 
-For this challenge, I've builded a architecture that uses a docker-compose to create a container with python scripts that attend the challenge requirements, a Redis server to enqueue jobs, and a PostgreSQL database to store data. 
+For this challenge, I designed an architecture that uses a docker-compose to create a container with python scripts that meets the challenge requirements, a Redis server to enqueue jobs, and a PostgreSQL database to store data. 
 
 ### 🚀 Running the ingestion process
 
@@ -64,31 +64,32 @@ docker-compose up -d
 docker-compose exec ingest_app python app.py trips.csv
 ```
 
-The app build will create a volume mapped between the host and the container. So, to add more files to ingestion process, just put it in the files_to_ingest directory in root.
+The app build will create a volume mapped between the host and the container. So, to add more files to the ingestion process, just put them in the files_to_ingest directory in root.
 
-If you wish to ingest more than one file, just add it after the script path. The files must be separated by comma and it must be just the file name, without the full path.
+If you wish to ingest more than one file, just add it after the script path. The files must be separated by a comma and it must be just the file name, without the full path.
 
-When you run the exec command, the script will execute the follow steps:
+When you run the exec command, the script will execute the following steps:
 
 1. Get the files list to ingest
 2. For each file, will add the ingestion job to Redis queue using the [RQ library](https://python-rq.org/).
 
-The ingestion job will execute the follow steps:
+The ingestion job will execute the following steps:
 
 1. Read the CSV file passed as argument and create a pandas dataframe with the file data
 2. Save this panda dataframe to 'trips' table in PostgreSQL. I decided to use the [to_sql](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_sql.html) pandas function, because it will create the table if does not exist.
 >All steps executed log messages to show the user what's going on background.
 
 I decided to use Redis with the RQ library because it gave me the possibility to enqueue jobs to be processed in the background with workers.
-In order to simplify the running of this challenge, I've set to jobs run synchronously. But asynchronously it can be set just changing one parameter to True.
+In order to simplify the running of this challenge, I've set to jobs run synchronously. But asynchronously it can be set just by changing one parameter to True.
 
 ### 🚀 Showing reports results
 
-To show the queries results, just run the below command after did the ingestion process.
+To show the queries results, just run the below command after doing the ingestion process.
 
 ```
 docker-compose exec ingest_app python metrics.py
 ```
+The results will be printed in the console.
 
 ## :cloud: Cloud Architecture
 
@@ -96,17 +97,17 @@ docker-compose exec ingest_app python metrics.py
 
 For the cloud architecture, I decided to use AWS because I am more familiar with this provider.
 
-In order to achieve scalability and attend the requirement of use a REST API, this solution starts with the user making a POST to the API Gateway sending the CSV file to be processed. This API will call a AWS Lambda Function which will convert this CSV file to a JSON format and send to a Kinesis Data Firehose, that will deliver this data in an S3 bucket with parquet format. To query this data with a relational database, a Amazon Redshift will be created with an EXTERNAL TABLE, mapping to the S3 path with the parquet files. With the feature 'Redshift Spectrum', users can perform SQL queries on data stored S3 buckets.
+In order to achieve scalability and meet the requirement of using a REST API, this solution starts with the user making a POST to the API Gateway and sending the CSV file to be processed. This API will call an AWS Lambda Function which will convert this CSV file to a JSON format and send it to a Kinesis Data Firehose, that will deliver this data in an S3 bucket with parquet format. To query this data with a relational database, an Amazon Redshift will be created with an EXTERNAL TABLE, mapping to the S3 path with the parquet files. With the feature 'Redshift Spectrum', users can perform SQL queries on data stored in S3 buckets.
 
-The tool that made the scalability possible is the Kinesis Firehose, which is a serverless tool and can scale up easily.
+The tool that made scalability possible is the Kinesis Firehose, which is a serverless tool and can scale up easily.
 According to [AWS documentation](https://www.amazonaws.cn/en/kinesis/data-firehose/features/):
->Amazon Kinesis Data Firehose is the easiest way capture, transform, and load streaming data into data stores and analytics tools. Kinesis Data Firehose is a fully managed service that makes it easy to capture, transform, and load massive volumes of streaming data from hundreds of thousands of sources into Amazon S3, Amazon Redshift...
+>Amazon Kinesis Data Firehose is the easiest way to capture, transform, and load streaming data into data stores and analytics tools. Kinesis Data Firehose is a fully managed service that makes it easy to capture, transform, and load massive volumes of streaming data from hundreds of thousands of sources into Amazon S3, Amazon Redshift...
 
 >Scales elastically
 >Based on your ingestion pattern, Kinesis Data Firehose service might proactively increase the limits when excessive throttling is observed on your delivery stream.
 
-It's possible to Firehose send the data directly to Redshift. But I decided to send to S3 because this make possible for the user to query this data also using AWS Athena.
+It's possible for Firehose to send the data directly to Redshift. But I decided to send it to S3 because this makes it possible for the user to query this data also using AWS Athena.
 
-To create the whole infrastructure, I would use Terraform, an infrastrucure as code (IaC) tool that facilitates provisioning and managing infrastructure on-prem and in the cloud.
+To create the whole infrastructure, I would use Terraform, an infrastructure as code (IaC) tool that facilitates the provisioning and managing infrastructure on-prem and in the cloud.
 
 [⬆ Back to top](#trips-data-ingestion-challenge)<br>
