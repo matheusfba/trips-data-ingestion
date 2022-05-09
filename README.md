@@ -82,7 +82,7 @@ The ingestion job will execute the following steps:
 I decided to use Redis with the RQ library because it gave me the possibility to enqueue jobs to be processed in the background with workers.
 In order to simplify the running of this challenge, I've set to jobs run synchronously. But asynchronously it can be set just by changing one parameter to True.
 
-### 🚀 Showing reports results
+### :chart_with_upwards_trend: Showing reports results
 
 To show the queries results, just run the below command after doing the ingestion process.
 
